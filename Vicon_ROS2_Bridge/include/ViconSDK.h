@@ -18,6 +18,7 @@ public:
 	captureTree::marker getOneMarkerTrans(uint subjectIndex, uint markerCount);
     captureTree::segment getSegmentTrans(uint subjectIndex, uint segmentCount);
     captureTree::subject getSubjectTrans(uint subjectIndex);
+    std::vector<captureTree::subject> getCaptureTree();
 public:
 	vector<double> globalTransAndRotMatrix;
     ViconDataStreamSDK::CPP::Client myClient;
@@ -25,21 +26,15 @@ public:
 private:
 	/** 创建客户端 */
 
-	Output_GetSubjectCount OutputSubCount;
-	Output_GetSubjectName OutputSubName;
+	Output_GetSubjectCount OutputSubCount_;
+	Output_GetSegmentCount OutputSegCount_;
+	Output_GetMarkerCount OutputMarkCount_;
 
-	Output_GetSegmentCount OutputSegCount;
-	Output_GetSegmentName OutputSegName;
+    std::vector<captureTree::subject> captureTree_;
 
-	Output_GetMarkerCount OutputMarkCount;
-	Output_GetMarkerName OutputMarkName;
 
-	Output_GetSegmentGlobalTranslation OutputGlobalTrans;
-	Output_GetSegmentGlobalRotationMatrix OutputGlobalRotMatix;
 
-    Output_GetMarkerGlobalTranslation OutputMarkerGlobalTrans;
 
-	unsigned int _baseGetPointsNum;
 };
 
 #endif // !VICONSDK_H

@@ -50,34 +50,34 @@ ViconSDK::ViconSDK()
 void ViconSDK::ViconSubAndSegGet()
 {
 	myClient.GetFrame();
-	OutputSubCount = myClient.GetSubjectCount();
+	OutputSubCount_ = myClient.GetSubjectCount();
 	cout << "********************Subjects and Markers information*********************" << endl;
     cout <<"_______subject_______\n";
-    cout << "the number of Subject is " << OutputSubCount.SubjectCount << endl;
+    cout << "the number of Subject is " << OutputSubCount_.SubjectCount << endl;
 
 //TODO:GetSubjectName
-	for (unsigned int SubCount = 0; SubCount < OutputSubCount.SubjectCount; SubCount++)
+	for (unsigned int SubCount = 0; SubCount < OutputSubCount_.SubjectCount; SubCount++)
 	{
-		OutputSubName = myClient.GetSubjectName(SubCount);
-		cout << "NO: " << SubCount << " Subject name is :" << OutputSubName.SubjectName << endl;
+		auto subName = myClient.GetSubjectName(SubCount);
+		cout << "NO: " << SubCount << " Subject name is :" << subName.SubjectName << endl;
 
 		cout << "    _______segment_______\n";
-		OutputSegCount = myClient.GetSegmentCount(OutputSubName.SubjectName);
-		cout << "    the number of " << OutputSubName.SubjectName << " Segment is :" << OutputSegCount.SegmentCount << endl;
-		for (unsigned int SegCount = 0; SegCount < OutputSegCount.SegmentCount; SegCount++)
+		OutputSegCount_ = myClient.GetSegmentCount(subName.SubjectName);
+		cout << "    the number of " << subName.SubjectName << " Segment is :" << OutputSegCount_.SegmentCount << endl;
+		for (unsigned int SegCount = 0; SegCount < OutputSegCount_.SegmentCount; SegCount++)
 		{
-			OutputSegName = myClient.GetSegmentName(OutputSubName.SubjectName, SegCount);
+			auto segName = myClient.GetSegmentName(subName.SubjectName, SegCount);
 			//cout << SegCount << " Segment name is :" << OutputSegName.SegmentName << endl;
-			cout << "    NO: " << SegCount << " Segment name is :" << OutputSegName.SegmentName << endl;
+			cout << "    NO: " << SegCount << " Segment name is :" << segName.SegmentName << endl;
 		}
 		cout << "       _______marker_______\n";
-		OutputMarkCount = myClient.GetMarkerCount(OutputSubName.SubjectName);
-		cout << "       the number of " << OutputSubName.SubjectName << " marker is :" << OutputMarkCount.MarkerCount << endl;
-		for (unsigned int MarkerCount = 0; MarkerCount < OutputMarkCount.MarkerCount; MarkerCount++)
+		OutputMarkCount_ = myClient.GetMarkerCount(subName.SubjectName);
+		cout << "       the number of " << subName.SubjectName << " marker is :" << OutputMarkCount_.MarkerCount << endl;
+		for (unsigned int MarkerCount = 0; MarkerCount < OutputMarkCount_.MarkerCount; MarkerCount++)
 		{
-			OutputMarkName = myClient.GetMarkerName(OutputSubName.SubjectName, MarkerCount);
+			auto markName = myClient.GetMarkerName(subName.SubjectName, MarkerCount);
 			//cout << SegCount << " Segment name is :" << OutputSegName.SegmentName << endl;
-			cout << "       NO: " << MarkerCount << " marker name is :" << OutputMarkName.MarkerName << endl;
+			cout << "       NO: " << MarkerCount << " marker name is :" << markName.MarkerName << endl;
 		}
 		//cout << "-----------------------------------";
 		cout << endl;
@@ -134,6 +134,16 @@ captureTree::subject ViconSDK::getSubjectTrans(uint subjectIndex){
         subject.markers.push_back(markerTrans);
     }
     return subject;
+}
+
+std::vector<captureTree::subject> ViconSDK::getCaptureTree(){
+    uint subjectNum = myClient.GetSubjectCount().SubjectCount;
+    for(int i = 0; i < subjectNum; i++){
+        auto subjectTrans = getSubjectTrans(i);
+        captureTree_.push_back(subjectTrans);
+    }
+
+    return captureTree_;
 }
 
 
